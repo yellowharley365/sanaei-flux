@@ -1,26 +1,19 @@
+
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-echo "Preparing official 3x-ui source..."
-
-if [ ! -d source/.git ]; then
-  git clone --depth 1 https://github.com/MHSanaei/3x-ui.git source
-fi
+echo "Cloning official 3x-ui source..."
+git clone --depth 1 https://github.com/MHSanaei/3x-ui.git source
 
 cd source
 
-echo "Checking build tools..."
-command -v go
-command -v node
-command -v npm
-
-echo "Building frontend..."
+echo "Installing frontend dependencies..."
 cd frontend
 npm ci
 npm run build
 cd ..
 
-echo "Checking embedded frontend..."
+echo "Checking frontend output..."
 test -f internal/web/dist/index.html
 
 echo "Building Go application..."
